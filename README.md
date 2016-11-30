@@ -51,6 +51,7 @@ Creating [Ansible] roles
   - RabbitMQ
   - Rundeck
   - Docker Images/Containers
+  - [Quagga] role has a few open issues which could be addressed
 - Add additional [Ansible] requirements in `requirements.yml`
   - `- src: https://github.com/mrlesmithjr/ansible-users.git`
   - Update your [Ansible] `roles` using `requirements.yml`
@@ -114,6 +115,7 @@ Larry Smith Jr.
 [git rebase]: <http://rnelson0.com/2014/12/23/using-git-rebase-to-rewrite-history/>
 [mrlesmithjr]: <https://twitter.com/mrlesmithjr>
 [PR]: <https://help.github.com/articles/about-pull-requests/>
+[Quagga]: <https://github.com/mrlesmithjr/ansible-quagga/issues>
 [Vagrant]: <https://www.vagrantup.com/>
 [vBrownBag]: <http://vbrownbag.com/>
 [Virtualbox]: <https://www.virtualbox.org/wiki/Downloads>
