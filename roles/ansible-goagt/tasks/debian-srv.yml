@@ -1,0 +1,22 @@
+---
+# tasks file for Debian based systems
+- name: Ensure Java Installed
+  apt: name={{ jdkver }} state=present
+
+- name: Ensure GoCD repo added
+  copy:
+    src={{ gocdaptrepo }}
+    dest=/etc/apt/sources.list.d/
+
+- name: Ensure GoCD public key present
+  apt_key: state=present url={{ gocdkeyurl }}
+
+- name: Ensure GoCD Agent installed
+  apt: name=go-agent state=present update_cache=yes
+  notify: restart-goagent
+
+- name: Ensure GoCD Agent config used
+  copy:
+    src=go-agent
+    dest=/etc/default
+  notify: restart-goagent

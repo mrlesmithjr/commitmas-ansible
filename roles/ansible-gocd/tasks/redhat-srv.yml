@@ -1,0 +1,20 @@
+---
+# tasks file for RedHat based systems
+- name: Ensure libselinux-python installed
+  yum: name=libselinux-python state=present
+
+- name: Ensure Java Installed
+  yum: name={{ jdkver }} state=present
+
+- name: Ensure GoCD repo added
+  copy:
+    src={{ gocdyumrepo }}
+    dest=/etc/yum.repos.d/
+
+- name: Ensure GoCD public key present
+  rpm_key: state=present key={{ gocdkeyurl }}
+
+- name: Ensure GoCD Server installed
+  yum: name=go-server state=present update_cache=yes
+  notify: restart-goserver
+

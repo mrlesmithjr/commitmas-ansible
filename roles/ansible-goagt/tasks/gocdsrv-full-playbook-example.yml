@@ -1,0 +1,59 @@
+---
+- hosts: gosrv
+  vars:
+      jdkver: java-1.7.0-openjdk
+      gocdyumrepo: gocd.repo
+      gocdaptrepo: gocd.list
+      gocdkeyurl: https://download.go.cd/GOCD-GPG-KEY.asc  
+  become: true
+  become_user: root
+
+  tasks:
+  - name: Ensure libselinux-python installed (RedHat)
+    yum: name=libselinux-python state=present
+    when: ansible_os_family == "RedHat"
+
+  - name: Ensure Java Installed (RedHat)
+    yum: name={{ jdkver }} state=present
+    when: ansible_os_family == "RedHat"
+
+  - name: Ensure Java Installed (Debian)
+    apt: name={{ jdkver }} state=present
+    when: ansible_os_family == "Debian"
+
+  - name: Ensure GoCD repo added (RedHat)
+    copy:
+      src={{ gocdyumrepo }}
+      dest=/etc/yum.repos.d/
+    when: ansible_os_family == "RedHat"
+
+  - name: Ensure GoCD repo added (Debian)
+    copy:
+      src={{ gocdaptrepo }}
+      dest=/etc/apt/sources.list.d/
+    when: ansible_os_family == "Debian"
+
+  - name: Ensure GoCD public key present (Redhat)
+    rpm_key: state=present key={{ gocdkeyurl }}
+    when: ansible_os_family == "RedHat"
+
+  - name: Ensure GoCD public key present (Debian)
+    apt_key: state=present url={{ gocdkeyurl }}
+    when: ansible_os_family == "Debian"
+
+  - name: Ensure GoCD Server installed (RedHat)
+    yum: name=go-server state=present update_cache=yes
+    when: ansible_os_family == "RedHat"
+    notify: restart-goserver
+
+  - name: Ensure GoCD Server installed (Debian)
+    apt: name=go-server state=present update_cache=yes
+    when: ansible_os_family == "Debian"
+    notify: restart-goserver
+
+  handlers:
+  - name: restart-goserver
+    service:
+      name: go-server
+      state: restarted
+      enabled: yes 

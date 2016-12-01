@@ -1,0 +1,6 @@
+---
+# defaults file for ansible-gocd
+jdkver: java-1.7.0-openjdk #jdf version listed in official GoCD documentation
+gocdyumrepo: gocd.repo #yum repo config as defined in official GoCD documentation
+gocdaptreo: gocd.list #apt repo config as defined in official GoCD documentation
+gocdkeyurl: https://download.go.cd/GOCD-GPG-KEY.asc #gpg key as defined in official GoCD documentation

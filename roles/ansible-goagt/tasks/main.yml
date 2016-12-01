@@ -1,0 +1,8 @@
+---
+# tasks file for ansible-gocd
+
+- include: debian-srv.yml
+  when: ansible_os_family == "Debian"
+
+- include: redhat-srv.yml
+  when: ansible_os_family == "RedHat"

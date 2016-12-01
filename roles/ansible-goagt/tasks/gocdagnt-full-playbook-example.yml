@@ -1,0 +1,63 @@
+---
+- hosts: goagt
+  vars:
+      jdkver: java-1.7.0-openjdk
+      gocdyumrepo: gocd.repo
+      gocdaptrepo: gocd.list
+      gocdkeyurl: https://download.go.cd/GOCD-GPG-KEY.asc
+  become: true
+  become_user: root
+
+  tasks:
+  - name: Ensure libselinux-python installed (RedHat)
+    yum: name=libselinux-python state=present
+    when: ansible_os_family == "RedHat"
+
+  - name: Ensure Java Installed (RedHat)
+    yum: name={{ jdkver }} state=present
+    when: ansible_os_family == "RedHat"
+
+  - name: Ensure Java Installed (Debian)
+    apt: name={{ jdkver }} state=present
+    when: ansible_os_family == "Debian"
+
+  - name: Ensure GoCD repo added (RedHat)
+    copy:
+      src={{ gocdyumrepo }}
+      dest=/etc/yum.repos.d/
+    when: ansible_os_family == "RedHat"
+
+  - name: Ensure GoCD repo added (Debian)
+    copy:
+      src={{ gocdaptrepo }}
+      dest=/etc/apt/sources.list.d/
+    when: ansible_os_family == "Debian"
+
+  - name: Ensure GoCD public key present (Redhat)
+    rpm_key: state=present key={{ gocdkeyurl }}
+    when: ansible_os_family == "RedHat"
+
+  - name: Ensure GoCD public key present (Debian)
+    apt_key: state=present url={{ gocdkeyurl }}
+    when: ansible_os_family == "Debian"
+
+  - name: Ensure GoCD Agent installed (RedHat)
+    yum: name=go-agent state=present update_cache=yes
+    when: ansible_os_family == "RedHat"
+
+  - name: Ensure GoCD Agent installed (Debian)
+    apt: name=go-agent state=present update_cache=yes
+    when: ansible_os_family == "Debian"
+
+  - name: Ensure GoCD Agent config used
+    copy:
+      src=go-agent
+      dest=/etc/default
+    notify: restart-goagent
+
+  handlers:
+  - name: restart-goagent
+    service:
+      name: go-agent
+      state: restarted
+      enabled: yes 
