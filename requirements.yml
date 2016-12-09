@@ -1,5 +1,6 @@
 ---
 - src: https://github.com/mrlesmithjr/ansible-docker.git
+- src: https://github.com/mrlesmithjr/ansible-phpipam.git
 - src: https://github.com/mrlesmithjr/ansible-quagga.git
 - src: https://github.com/mrlesmithjr/ansible-rabbitmq.git
 - src: https://github.com/mrlesmithjr/ansible-ufw.git

@@ -1,0 +1,35 @@
+---
+- name: debian | installing pre-req packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - 'fping'
+    - 'libapache2-mod-php{{ php_ver }}'
+    - 'python-mysqldb'
+    - 'php{{ php_ver }}'
+    - 'php{{ php_ver }}-cli'
+    - 'php{{ php_ver }}-gd'
+    - 'php{{ php_ver }}-gmp'
+    - 'php-pear'
+    - 'php{{ php_ver }}-mysqlnd'
+    - 'php{{ php_ver }}-ldap'
+    - 'php{{ php_ver }}-mcrypt'
+    - 'php{{ php_ver }}-curl'
+    - '{{ php_sqlite_package }}'
+    - 'wget'
+
+- name: debian | Installing Git
+  apt:
+    name: "git"
+    state: "present"
+  when: phpipam_install_from_git
+
+- name: debian | enabling php mcrypt module
+  command: "{{ phpenmod_command }} mcrypt"
+
+- name: debian | enabling apache mod_rewrite
+  apache2_module:
+    name: rewrite
+    state: present
+  notify: restart apache2
