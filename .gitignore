@@ -1,6 +1,7 @@
 .vagrant
 host_vars/
 *.retry
+.galaxy_install_info
 
 # Created by https://www.gitignore.io/api/osx
 
