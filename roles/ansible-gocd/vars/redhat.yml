@@ -1,0 +1,4 @@
+---
+# vars file for ansible-gocd
+__java_package:
+  - java-1.7.0-openjdk

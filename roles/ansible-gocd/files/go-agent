@@ -1,0 +1,5 @@
+GO_SERVER_URL=https://192.168.72.249:8154/go
+AGENT_WORK_DIR=/var/lib/${SERVICE_NAME:-go-agent}
+DAEMON=Y
+VNC=N
+
